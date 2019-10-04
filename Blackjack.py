@@ -38,13 +38,14 @@ def hit_or_stand(Deck,Hand):
 
     while True:
        try:
-        Choose_HitStand = str(input("Enter Hit or Stand, 'h' or 's' : " ))
+        Choose_HitStand = str(input("\nEnter Hit or Stand, 'h' or 's' : " ))
        except:
         print("Only lower case string allowed.")
        else:    
         if Choose_HitStand[0].lower() == 'h':
-            hit(deck,Hand)
-           
+            hit(Deck,Hand)
+            break
+
         elif Choose_HitStand[0].lower() == 's':
             print('Player Stand,Dealer is Playing.')
             playing = False
@@ -60,23 +61,23 @@ def hit_or_stand(Deck,Hand):
     
 
 def show_some(player,dealer):
-    print("Dealer's Hand")
-    print("<<<Card Hidden>>>")
-    for card in dealer.cards[2:]:
+    print("\nDealer's Hand")
+    print("\n<<<Card Hidden>>>")
+    for card in dealer.cards[1:]:
         print(card)
-    print("Player's Hand")
+    print("\nPlayer's Hand\n")
     for card in player.cards:
         print(card)
  
     
 def show_all(player,dealer):
     
-    print("Dealer's Hand")
+    print("\nDealer's Hand")
     for card in dealer.cards:
         print(card)
     print(dealer.value)
 
-    print("Player's Hand")
+    print("\nPlayer's Hand")
     for card in player.cards:
         print(card)
     print(player.value)
@@ -86,9 +87,9 @@ def show_all(player,dealer):
 #      This function takes hits
 #******************************************************************************************************* 
 
-def hit(deck,hand):
-    add_card(deck.deal())
-    hand.adjust_for_aces    
+def hit(deck,Hand):
+    Hand.add_card(deck.deal())
+    Hand.adjust_for_aces    
 
 
 #*****************************************************************************************************
@@ -97,19 +98,19 @@ def hit(deck,hand):
 
 def player_busts(player,dealer,Chips):
     print("Player Busts!!!")
-    chips.lose_bet()
+    Chips.lose_bet()
 
 def player_wins(player,dealer,Chips):
     print("Player Won!!!")
-    chips.win_bet()
+    Chips.win_bet()
 
 def dealer_busts(player,dealer,Chips):
     print("Dealer Busts!!!")
-    chips.lose_bet()
+    Chips.lose_bet()
 
 def dealer_wins(player,dealer,Chips):
     print("Delaer Busts!!!")
-    chips.win_bet()
+    Chips.win_bet()
 
 def push():
     print("Dealer and Player tie! It's a push.")
@@ -127,8 +128,8 @@ def take_bet(Chips):
             except:
                 print("Enter interger numbers only.")
             else:
-                if Chips.bet > Chips.total:
-                    print(f"Bet must be Less then availble balance {Chips.total}. ")
+                if Chips.bet < Chips.total:
+                    print(f"Bet must be greater then availble balance {Chips.total}. ")
                     continue
                 else:
                     break
@@ -139,7 +140,7 @@ def take_bet(Chips):
 
 while True:
     # Print an opening statement
-    print("Welcome to BlackJack !!")
+    print("\n Welcome to BlackJack !!\n")
 
     
     # Create & shuffle the deck, deal two cards to each player
@@ -170,14 +171,14 @@ while True:
     while playing == True:  # recall this variable from our hit_or_stand function
         
         # Prompt for Player to Hit or Stand
-                 hit_or_stand(Deck.Deck,Players_Hand)
+                 hit_or_stand(Deck,Players_Hand)
         
         # Show cards (but keep one dealer card hidden)
                  show_some(Players_Hand,Dealers_Hand)
         
         # If player's hand exceeds 21, run player_busts() and break out of loop
                  if Players_Hand.value > 21:
-                   player_busts(Players_Hand,Dealers_Hand,Chips)
+                   player_busts(Players_Hand,Dealers_Hand,Player_Chips)
 
                    break
 
@@ -189,16 +190,16 @@ while True:
         # Show all cards
                  show_all(Players_Hand,Dealers_Hand)
         # Run different winning scenarios
-                 if Players_Hand.value < Delears_Hand.value:
-                      player_busts(Players_Hand,Dealers_Hand,Chips)
+                 if Players_Hand.value < Dealers_Hand.value:
+                      player_busts(Players_Hand,Dealers_Hand,Player_Chips)
                  elif Players_Hand.value > Dealers_Hand.value:
-                     player_wins(Players_Hand,Dealers_Hand,Chips)
+                     player_wins(Players_Hand,Dealers_Hand,Player_Chips)
                  elif Delears_Hand.value > 21:
-                      dealer_wins(Players_Hand.value,Dealers_Hand,Chips)
+                      dealer_wins(Players_Hand.value,Dealers_Hand,Player_Chips)
                  else:
                       push(player_hand,dealer_hand)
 
-    print("\nPlayer's winnings stand at",player_chips.total)
+    print("\nPlayer's winnings stand at",Player_Chips.total)
     
     # Ask to play again
     new_game = input("Would you like to play another hand? Enter 'y' or 'n' ")
