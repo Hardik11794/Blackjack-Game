@@ -15,4 +15,4 @@ class Chips:
     def loose_bet(self):
         self.total -= self.bet
         
-`
+
