@@ -5,27 +5,7 @@ from Modules import Chips
 
 
 playing = True
-############################For Deck######################
-#c = Deck.Deck()
-#print(c)
-#print(c.deal())
-#print(c)
-#c.shuffle()
-#print(c)
-#print(c.deal())
-##########################################################
 
-############################For Hand########################
-#test_deck = Deck.Deck()
-#test_deck.shuffle()
-#test_player = Hand.Hand()
-#test_player.add_card(test_deck.deal())
-#test_player.add_card(test_deck.deal())
-#print(test_deck.deal())
-#print(test_player.value)
-#for card in test_player.cards:
-#    print(card)
-#########################################################
 
 #*****************************************************************************************************
 #      This function ask player for Hit or Stand
@@ -47,7 +27,7 @@ def hit_or_stand(Deck,Hand):
             break
 
         elif Choose_HitStand[0].lower() == 's':
-            print('Player Stand,Dealer is Playing.')
+            print('\nPlayer Stand,Dealer is Playing.')
             playing = False
             break
         else:
@@ -59,25 +39,26 @@ def hit_or_stand(Deck,Hand):
 #      This function shows card
 #*****************************************************************************************************
     
-
 def show_some(player,dealer):
+    x=0
     print("\nDealer's Hand")
     print("\n<<<Card Hidden>>>")
     for card in dealer.cards[1:]:
         print(card)
+
     print("\nPlayer's Hand\n")
     for card in player.cards:
         print(card)
- 
+    print(player.value)
     
 def show_all(player,dealer):
     
-    print("\nDealer's Hand")
+    print("\nDealer's Hand\n")
     for card in dealer.cards:
         print(card)
     print(dealer.value)
 
-    print("\nPlayer's Hand")
+    print("\nPlayer's Hand\n")
     for card in player.cards:
         print(card)
     print(player.value)
@@ -97,23 +78,23 @@ def hit(deck,Hand):
 #*****************************************************************************************************
 
 def player_busts(player,dealer,Chips):
-    print("Player Busts!!!")
+    print("\nPlayer Busts!!!\n")
     Chips.lose_bet()
 
 def player_wins(player,dealer,Chips):
-    print("Player Won!!!")
+    print("\nPlayer Won!!!\n")
     Chips.win_bet()
 
 def dealer_busts(player,dealer,Chips):
-    print("Dealer Busts!!!")
+    print("\nDealer Busts!!!\n")
     Chips.lose_bet()
 
 def dealer_wins(player,dealer,Chips):
-    print("Delaer Busts!!!")
+    print("\nDelaer Busts!!!\n")
     Chips.win_bet()
 
 def push():
-    print("Dealer and Player tie! It's a push.")
+    print("\nDealer and Player tie! It's a push.\n")
 
 
 #*****************************************************************************************************
@@ -128,8 +109,8 @@ def take_bet(Chips):
             except:
                 print("Enter interger numbers only.")
             else:
-                if Chips.bet < Chips.total:
-                    print(f"Bet must be greater then availble balance {Chips.total}. ")
+                if Chips.bet > Chips.total:
+                    print(f"Bet must be less then availble balance {Chips.total}. ")
                     continue
                 else:
                     break
@@ -171,10 +152,11 @@ while True:
     while playing == True:  # recall this variable from our hit_or_stand function
         
         # Prompt for Player to Hit or Stand
-                 hit_or_stand(Deck,Players_Hand)
-        
+                 while Players_Hand.value < 21:
+                    hit_or_stand(Deck,Players_Hand)
+                    show_some(Players_Hand,Dealers_Hand)
         # Show cards (but keep one dealer card hidden)
-                 show_some(Players_Hand,Dealers_Hand)
+                 
         
         # If player's hand exceeds 21, run player_busts() and break out of loop
                  if Players_Hand.value > 21:
@@ -190,14 +172,23 @@ while True:
         # Show all cards
                  show_all(Players_Hand,Dealers_Hand)
         # Run different winning scenarios
-                 if Players_Hand.value < Dealers_Hand.value:
+                 if Dealers_Hand.value > 21:
+                      dealer_busts(Players_Hand.value,Dealers_Hand,Player_Chips)
+                      break   
+                  
+                 elif Players_Hand.value < Dealers_Hand.value:
                       player_busts(Players_Hand,Dealers_Hand,Player_Chips)
+                      break
+
                  elif Players_Hand.value > Dealers_Hand.value:
                      player_wins(Players_Hand,Dealers_Hand,Player_Chips)
-                 elif Delears_Hand.value > 21:
-                      dealer_wins(Players_Hand.value,Dealers_Hand,Player_Chips)
+                     break
+
+                
+
                  else:
-                      push(player_hand,dealer_hand)
+                      push()
+                      break
 
     print("\nPlayer's winnings stand at",Player_Chips.total)
     
@@ -214,4 +205,4 @@ while True:
     
     # Ask to play again
 
-        break
+      #  break
