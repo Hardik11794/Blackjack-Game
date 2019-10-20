@@ -1,12 +1,13 @@
-global playing  
+from Modules import Hand
+#global playing  
 
 #*****************************************************************************************************
 #      This function ask player for Hit or Stand
 #*****************************************************************************************************
 
 
-def hit_or_stand(Deck,Hand):
-  global playing
+def hit_or_stand(Deck,Hand,playing):
+ # global playing
   
   while True:
     Choose_HitStand = str(input("\nEnter Hit or Stand, 'h' or 's' : " ))
@@ -22,6 +23,8 @@ def hit_or_stand(Deck,Hand):
           print("Only write 'h' or 's' for Hit and Stand")
           continue  
 
+  return playing
+
 #*****************************************************************************************************
 #      This function shows card
 #*****************************************************************************************************
@@ -32,6 +35,7 @@ def show_some(player,dealer):
     print("\n<<<Card Hidden>>>")
     for card in dealer.cards[1:]:
         print(card)
+    print(dealer.value - Hand.values[dealer.cards[0].rank])
 
     print("\nPlayer's Hand\n")
     for card in player.cards:
